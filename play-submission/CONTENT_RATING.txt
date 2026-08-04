@@ -1,0 +1,60 @@
+KIKIT — CONTENT RATING QUESTIONNAIRE (IARC)
+Play Console → Policy → App content → Content rating → Start questionnaire
+============================================================
+
+BEFORE YOU START
+----------------
+- Category: Social / Communication
+- App is NOT a game
+- Target audience: 18+ (see Target audience form)
+- Positioning: verified community platform, NOT a dating app
+
+LIKELY ANSWERS
+--------------
+
+Violence
+  Cartoon or fantasy violence ... None
+  Realistic violence ............ None
+  Blood ......................... None
+
+Sexual content
+  Nudity ........................ None
+  Sexual content or themes ...... None or Mild (user profiles — answer honestly)
+  Note: Emphasize community/live rooms, not dating/matching
+
+Language
+  Profanity ..................... Mild or None (UGC live chat may contain user language)
+  Crude humor ................... None
+
+Controlled substances .......... None
+
+Gambling ....................... None (virtual gifts are not gambling)
+
+User interaction
+  Users interact online ......... YES (live chat, 1:1 chat, video calls)
+  Shares user location .......... YES (optional precise location for nearby features)
+  Shares personal info .......... YES (profiles visible to verified members)
+
+User-generated content ......... YES
+  - Live room chat
+  - Profile photos and bios
+  - Direct messages
+
+Digital purchases .............. YES
+  - Subscriptions (premium features)
+  - Consumable coins/gifts
+
+Miscellaneous
+  Unrestricted web access ....... NO (or only in-app WebViews for legal pages)
+  Promotion of age-restricted products ... NO
+
+EXPECTED RATING
+---------------
+Teen (13+) or Mature 17+ depending on UGC/live chat answers.
+Social apps with live streaming + UGC often receive Mature 17+.
+
+TIPS TO AVOID MISCLASSIFICATION AS DATING
+-----------------------------------------
+- Store listing says "community platform, not dating app"
+- Primary features: Live Rooms, Sparks (interest-based intros)
+- Face verification required for community access

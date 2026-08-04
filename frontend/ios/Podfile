@@ -1,0 +1,138 @@
+# Resolve react_native_pods.rb with node to allow for hoisting
+# require Pod::Executable.execute_command('node', ['-p',
+#   'require.resolve(
+#     "react-native/scripts/react_native_pods.rb",
+#     {paths: [process.argv[1]]},
+#   )', __dir__]).strip
+
+def node_require(script)
+     require Pod::Executable.execute_command('node', ['-p',
+    # Resolve script with node to allow for hoisting
+      "require.resolve(
+        '#{script}',
+        {paths: [process.argv[1]]},
+      )", __dir__]).strip
+  end
+  
+  # Use it to require both react-native's and this package's scripts:
+  node_require('react-native/scripts/react_native_pods.rb')
+  node_require('react-native-permissions/scripts/setup.rb')
+
+platform :ios, min_ios_version_supported
+use_modular_headers!
+use_frameworks! :linkage => :static
+prepare_react_native_project!
+setup_permissions([
+  # 'AppTrackingTransparency',
+  # 'Bluetooth',
+  # 'Calendars',
+  # 'CalendarsWriteOnly',
+  'Camera',
+  # 'Contacts',
+  # 'FaceID',
+  # 'LocationAccuracy',
+  # 'LocationAlways',
+  'LocationWhenInUse',
+  # 'MediaLibrary',
+  'Microphone',
+  # 'Motion',
+  # 'Notifications',
+  'PhotoLibrary',
+  # 'PhotoLibraryAddOnly',
+  # 'Reminders',
+  # 'Siri',
+  # 'SpeechRecognition',
+  # 'StoreKit',
+])
+linkage = ENV['USE_FRAMEWORKS']
+if linkage != nil
+  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
+  use_frameworks! :linkage => linkage.to_sym
+end
+
+target 'kikit' do
+  config = use_native_modules!
+  use_frameworks! :linkage => :static
+  $RNFirebaseAsStaticFramework = true
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    # An absolute path to your application root.
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
+  )
+
+  post_install do |installer|
+    # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
+    react_native_post_install(
+      installer,
+      config[:reactNativePath],
+      :mac_catalyst_enabled => false,
+      # :ccache_enabled => true
+    )
+
+    # Bump all pods with a deployment target below iOS 13 to iOS 13.
+    # This fixes "'UIWindowScene' is only available in iOS 13.0 or newer" and
+    # similar errors caused by pods (e.g. RevenueCat, GoogleSignIn) that use
+    # iOS 13 APIs but declare a lower minimum OS version.
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |build_config|
+        current = build_config.build_settings['IPHONEOS_DEPLOYMENT_TARGET']
+        if current.nil? || current.to_f < 13.0
+          build_config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+        end
+
+        # VisionCamera uses iOS 13+ APIs; podspec still declares 12.4
+        if target.name == 'VisionCamera'
+          build_config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.1'
+        end
+
+        # fmt 11.x fails to compile with Xcode 16+ clang consteval checks
+        if target.name == 'fmt'
+          defs = build_config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] || ['$(inherited)']
+          defs = [defs] unless defs.is_a?(Array)
+          defs << 'FMT_USE_CONSTEVAL=0' unless defs.include?('FMT_USE_CONSTEVAL=0')
+          build_config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = defs
+        end
+      end
+    end
+
+    fmt_base = File.join(__dir__, 'Pods/fmt/include/fmt/base.h')
+    if File.exist?(fmt_base)
+      content = File.read(fmt_base)
+      patched = content.sub(
+        %r{// Detect consteval, C\+\+20 constexpr extensions and std::is_constant_evaluated\.\n#if !defined\(__cpp_lib_is_constant_evaluated\).*?#endif\n#if FMT_USE_CONSTEVAL}m,
+        "// Detect consteval, C++20 constexpr extensions and std::is_constant_evaluated.\n#define FMT_USE_CONSTEVAL 0\n#if FMT_USE_CONSTEVAL"
+      )
+      File.write(fmt_base, patched) if patched != content
+    end
+
+    stream_manager = File.join(__dir__, '../node_modules/@stream-io/video-react-native-sdk/ios/StreamInCallManager.swift')
+    if File.exist?(stream_manager)
+      content = File.read(stream_manager)
+      patched = content
+      patched = patched.gsub(
+        'engineSubscription = adm.publisher.sink { [weak self] event in',
+        "let eventPublisher: AnyPublisher<AudioDeviceModule.Event, Never> = adm.publisher\n                engineSubscription = eventPublisher.sink { [weak self] (event: AudioDeviceModule.Event) in"
+      )
+      patched = patched.gsub(
+        'webRTCModule.track(forId: $0)',
+        'webRTCModule.track(forId: $0, pcId: NSNumber(value: -1))'
+      )
+      File.write(stream_manager, patched) if patched != content
+    end
+
+    adm_swift = File.join(__dir__, '../node_modules/@stream-io/react-native-webrtc/ios/RCTWebRTC/Utils/AudioDeviceModule/AudioDeviceModule.swift')
+    if File.exist?(adm_swift)
+      content = File.read(adm_swift)
+      patched = content.sub(
+        "    enum Event: Equatable, CustomStringConvertible {",
+        "    public enum Event: Equatable, CustomStringConvertible {"
+      )
+      patched = patched.sub(
+        "        var description: String {",
+        "        public var description: String {"
+      )
+      File.write(adm_swift, patched) if patched != content
+    end
+  end
+end

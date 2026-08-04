@@ -1,0 +1,78 @@
+KIKIT — GOOGLE PLAY DATA SAFETY FORM
+Package: app.letskikit.kikit
+Align with iOS PrivacyInfo.xcprivacy and https://www.letskikit.com/privacy
+============================================================
+
+COLLECTION & SHARING OVERVIEW
+-----------------------------
+Does your app collect or share any of the required user data types? YES
+
+Is all of the user data collected by your app encrypted in transit? YES
+
+Do you provide a way for users to request that their data is deleted? YES
+(In-app: Profile → Delete account)
+
+Does your app use advertising ID or track users across apps? NO
+
+DATA TYPES — COLLECTED
+----------------------
+
+Personal info
+  Name ...................... Collected | Not shared | App functionality, Account management
+  Email address ............. Collected | Not shared | App functionality, Account management
+  User IDs .................. Collected | Not shared | App functionality, Account management
+
+Photos and videos
+  Photos .................... Collected | Not shared | App functionality (profile, verification, chat)
+  Videos .................... Collected | Not shared | App functionality (live rooms, video calls)
+
+Location
+  Precise location .......... Collected (optional) | Not shared | App functionality (nearby rooms/members)
+
+Financial info
+  Purchase history .......... Collected | Not shared | App functionality (IAP, subscriptions)
+
+Messages
+  Other in-app messages ..... Collected | Not shared | App functionality (chat, live room chat)
+
+Audio
+  Voice or sound recordings . Collected | Not shared | App functionality (live rooms, video calls)
+
+App activity
+  In-app search history ..... Optional — if tracked, mark Collected | Not shared | App functionality
+  Other user-generated content Collected | Not shared | App functionality (profiles, room chat)
+
+Device or other IDs
+  Device or other IDs ....... Collected | Not shared | App functionality (push notifications, auth)
+
+SECURITY PRACTICES
+------------------
+- Data encrypted in transit: Yes (HTTPS/TLS)
+- Users can request data deletion: Yes
+
+DATA USAGE — PURPOSES (check all that apply per type)
+---------------------------------------------------
+- App functionality
+- Account management
+- Fraud prevention, security, and compliance (if applicable for verification)
+
+NOT COLLECTED / NOT SHARED
+--------------------------
+- Health info
+- Financial info beyond purchase history
+- Web browsing history
+- Contacts (unless you explicitly added contact sync — verify in code)
+- Crash logs to third-party ad networks
+- Data sold to third parties
+
+THIRD-PARTY SDKs (disclose in "Data shared" only if SDK receives data off-device)
+---------------------------------------------------------------------------------
+- Firebase (FCM, auth) — project kikit-c9fee ONLY (not Homelit)
+- RevenueCat — purchase/subscription management
+- Stream (chat, video) — messaging and live video
+- Google Sign-In — authentication
+
+NOTES FOR REVIEWER
+------------------
+Kikit is a verified community platform (not dating). UGC includes live chat, profiles, and photos.
+Face verification is required before live/community access.

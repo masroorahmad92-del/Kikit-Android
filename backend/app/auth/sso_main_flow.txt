@@ -1,0 +1,75 @@
+┌──────────────────────────────────────────────────────────────────┐
+│                         USER'S MOBILE APP                         │
+│                        (React Native)                             │
+└───────────────────────────┬──────────────────────────────────────┘
+                            │
+                            │ Step 1: User taps "Sign in with Google"
+                            │
+                            ▼
+┌──────────────────────────────────────────────────────────────────┐
+│              @react-native-google-signin/google-signin            │
+│              (Library handles OAuth internally)                   │
+└───────────────────────────┬──────────────────────────────────────┘
+                            │
+                            │ Step 2: Opens Google Sign-In UI
+                            │ (Native iOS/Android UI, NOT webview)
+                            │
+                            ▼
+┌──────────────────────────────────────────────────────────────────┐
+│                     GOOGLE'S SERVERS                              │
+│              (User authenticates with Google)                     │
+└───────────────────────────┬──────────────────────────────────────┘
+                            │
+                            │ Step 3: Google validates credentials
+                            │ Returns: ID Token, Access Token, User Info
+                            │
+                            ▼
+┌──────────────────────────────────────────────────────────────────┐
+│                    BACK TO YOUR MOBILE APP                        │
+│              (Library returns tokens to your code)                │
+└───────────────────────────┬──────────────────────────────────────┘
+                            │
+                            │ Step 4: Extract ID Token
+                            │
+                            ▼
+┌──────────────────────────────────────────────────────────────────┐
+│                 YOUR CODE: Send ID Token to Backend               │
+│              POST /auth/google with { id_token: "..." }           │
+└───────────────────────────┬──────────────────────────────────────┘
+                            │
+                            │ Step 5: HTTP Request to your FastAPI
+                            │
+                            ▼
+┌──────────────────────────────────────────────────────────────────┐
+│                      YOUR FASTAPI BACKEND                         │
+│                  Receives: { id_token: "..." }                    │
+└───────────────────────────┬──────────────────────────────────────┘
+                            │
+                            │ Step 6: Verify token with Google
+                            │
+                            ▼
+┌──────────────────────────────────────────────────────────────────┐
+│                     GOOGLE'S SERVERS                              │
+│          (Backend asks: "Is this token valid?")                   │
+└───────────────────────────┬──────────────────────────────────────┘
+                            │
+                            │ Step 7: Google confirms token is valid
+                            │ Returns: User data (email, name, etc)
+                            │
+                            ▼
+┌──────────────────────────────────────────────────────────────────┐
+│                      YOUR FASTAPI BACKEND                         │
+│              Step 8: Check if user exists in database             │
+│              Step 9: Create user OR login existing user           │
+│              Step 10: Generate YOUR OWN JWT token                 │
+└───────────────────────────┬──────────────────────────────────────┘
+                            │
+                            │ Step 11: Return JWT + user data
+                            │ Response: { access_token: "...", user: {...} }
+                            │
+                            ▼
+┌──────────────────────────────────────────────────────────────────┐
+│                         YOUR MOBILE APP                           │
+│              Step 12: Store JWT token locally                     │
+│              Step 13: Navigate to home screen                     │
+└──────────────────────────────────────────────────────────────────┘

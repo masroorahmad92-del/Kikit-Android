@@ -1,0 +1,20 @@
+.DS_Store
+*.pyc
+
+# Android signing & Firebase secrets
+**/keystore.properties
+**/keystore/*.keystore
+**/google-services.json
+!**/google-services.json.example
+
+# Build outputs (AAB built locally, uploaded manually)
+**/app/build/outputs/
+__pycache__/
+.env
+.env.*
+!.env.example
+*.pem
+*.p12
+*.mobileprovision
+.idea/
+.vscode/

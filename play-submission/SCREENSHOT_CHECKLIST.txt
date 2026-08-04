@@ -1,0 +1,49 @@
+KIKIT — STORE ASSETS CHECKLIST
+============================================================
+
+REQUIRED ASSETS
+---------------
+
+[ ] App icon
+    Size: 512×512 PNG, 32-bit, NO alpha channel
+    Source: Export from iOS 1024.png in Xcode asset catalog, resize to 512×512
+
+[ ] Feature graphic
+    Size: 1024×500 PNG or JPEG
+    Content: Kikit logo + tagline "Verified Live Rooms & Community"
+
+[ ] Phone screenshots (minimum 2, maximum 8)
+    Aspect: 16:9 or 9:16
+    Min short side: 320px
+    Recommended: 1080×1920 or 1080×2340 (9:16)
+
+SCREENSHOT ORDER (match App Store)
+----------------------------------
+1. Live Rooms
+2. Discover / Sparks
+3. Face verification
+4. In-room gifting
+5. Chat
+
+OPTIONAL (recommended)
+--------------------
+[ ] 7-inch tablet screenshots
+[ ] 10-inch tablet screenshots
+
+HOW TO CAPTURE
+--------------
+Option A: Android emulator (Pixel 6/7, API 35)
+  cd frontend && npx react-native run-android
+  adb exec-out screencap -p > screenshot.png
+
+Option B: Physical Android device
+  Enable USB debugging → capture screenshots
+
+Option C: Reuse iOS screenshots (resize to 9:16 if needed)
+  Play accepts mixed platform screenshots for first submission,
+  but Android-native screenshots are preferred.
+
+AAB FOR UPLOAD
+--------------
+Path: frontend/android/app/build/outputs/bundle/release/app-release.aab
+Version: 1.0 (versionCode 24)

@@ -1,0 +1,50 @@
+KIKIT — GOOGLE PLAY STORE LISTING (copy-paste ready)
+Package: app.letskikit.kikit
+============================================================
+
+APP NAME
+--------
+Kikit
+
+SHORT DESCRIPTION (80 chars max)
+--------------------------------
+Verified live rooms, Sparks & virtual gifts — interest-based community, not dating.
+
+FULL DESCRIPTION (4000 chars max)
+---------------------------------
+Kikit is a verified community platform for interest-based connection.
+
+Join public Live Rooms hosted by verified members — watch, chat, and support creators with virtual gifts. Browse the Community tab to find people who share your hobbies and send a Spark: a contextual introduction tied to a shared interest, not an anonymous swipe.
+
+Every member passes face verification before accessing live rooms or community features. Hosts earn diamonds from gifts; members enjoy safe 1:1 chat and premium video calls.
+
+KEY FEATURES
+• Verified-only access — face match against profile photos
+• Interest-based Live Rooms with in-room chat and virtual gifting
+• Sparks — contextual introductions tied to shared interests
+• Host monetization — viewers send gifts; hosts earn diamonds
+• Safe 1:1 chat and premium video calls
+
+Kikit is a community platform, not a dating app.
+
+Terms of Use: https://www.letskikit.com/terms
+Privacy Policy: https://www.letskikit.com/privacy
+Support: https://letskikit.com
+
+CATEGORY
+--------
+Social
+
+TAGS (if prompted)
+------------------
+Social networking, Live streaming, Community
+
+CONTACT DETAILS
+---------------
+Email: admin@letskikit.com
+Website: https://letskikit.com
+Privacy policy URL: https://www.letskikit.com/privacy
+
+RELEASE NOTES (for version 1.0 build 24)
+----------------------------------------
+Initial Android release of Kikit — verified community platform with live rooms, Sparks, and virtual gifting.

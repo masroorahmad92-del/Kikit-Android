@@ -1,0 +1,36 @@
+# App Store Connect — paste these when submitting build 22
+
+## Promotional Text
+Kikit connects verified members through interest-based live rooms, Sparks, and in-room gifting — a community platform, not a dating app.
+
+## Subtitle
+Verified live rooms & community
+
+## Description (first 3 paragraphs)
+Kikit is a verified community platform for interest-based connection.
+
+Join public Live Rooms hosted by verified members — watch, chat, and support creators with virtual gifts. Browse the Community tab to find people who share your hobbies and send a Spark: a contextual introduction tied to a shared interest, not an anonymous swipe.
+
+Every member passes face verification before accessing live rooms or community features. Hosts earn diamonds from gifts; members enjoy safe 1:1 chat and premium video calls.
+
+## Keywords
+live rooms,verified community,sparks,virtual gifts,interest groups,social networking
+
+## Category
+Primary: Social Networking
+Secondary: Lifestyle
+
+## App Review Notes
+Guideline 4.3(b) response — Kikit is NOT a dating app.
+
+Primary experience: Verified Live Rooms (public livestreams by interest), in-room chat + virtual gifting, Community tab for interest-based Sparks (contextual intros, not romance matching).
+
+Demo login (no OTP): appreview@letskikit.com / AppReview2026!
+
+Test: LIVE → join room | COMMUNITY → send Spark | PROFILE → delete account
+
+Contact: admin@letskikit.com
+Support URL: https://letskikit.com
+
+## Resolution Center reply (if appealing)
+We repositioned Kikit as a verified community platform. Build 22 removes dating-oriented labels, emphasizes Live Rooms as the primary experience, and reframes member discovery as interest-based Sparks for community connection — not romantic matching. Metadata and screenshots updated accordingly.

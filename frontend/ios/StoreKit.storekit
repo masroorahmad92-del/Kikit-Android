@@ -1,0 +1,166 @@
+{
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : [
+      {
+        "locale" : "en_US",
+        "policyText" : "",
+        "policyURL" : ""
+      }
+    ]
+  },
+  "identifier" : "4995FA14",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "99.99",
+      "familyShareable" : false,
+      "internalID" : "6760421167",
+      "localizations" : [
+        {
+          "description" : "Coins can be used for gifting users inside Kikit",
+          "displayName" : "1000 Coins",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.kikit.coins.1000",
+      "referenceName" : "1000 Coins",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "999.99",
+      "familyShareable" : false,
+      "internalID" : "6760427038",
+      "localizations" : [
+        {
+          "description" : "Coins can be used for gifting users inside Kikit",
+          "displayName" : "10000 Coin",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.kikit.coins.10000",
+      "referenceName" : "10000 Coins",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "49.99",
+      "familyShareable" : false,
+      "internalID" : "6760420739",
+      "localizations" : [
+        {
+          "description" : "Coins can be used for gifting users inside Kikit",
+          "displayName" : "500 Coins",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.kikit.coins.500",
+      "referenceName" : "500 Coins",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "499.99",
+      "familyShareable" : false,
+      "internalID" : "6760421177",
+      "localizations" : [
+        {
+          "description" : "Coins can be used for gifting users inside Kikit",
+          "displayName" : "5000 Coins",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.kikit.coins.5000",
+      "referenceName" : "5000 Coins",
+      "type" : "Consumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6758234142",
+    "_askToBuyEnabled" : false,
+    "_billingGracePeriodEnabled" : false,
+    "_billingIssuesEnabled" : false,
+    "_developerTeamID" : "K3B599KVGX",
+    "_disableDialogs" : false,
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 795039220.49839199,
+    "_locale" : "en_US",
+    "_renewalBillingIssuesEnabled" : false,
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+
+    ],
+    "_timeRate" : 0
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "21974889",
+      "localizations" : [
+
+      ],
+      "name" : "Kikit Premium",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "99.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6760491071",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Everything included plus unlimited calls",
+              "displayName" : "Annual Premium",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.kikit.subscription.annual",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Annual Premium",
+          "subscriptionGroupID" : "21974889",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "3.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6760491157",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Everything included plus one call per month 10 mins max",
+              "displayName" : "Monthly Premium",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.kikit.subscription.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Monthly Premium",
+          "subscriptionGroupID" : "21974889",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}

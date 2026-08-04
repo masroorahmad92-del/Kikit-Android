@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>Kikit</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.926314958540-25tfu0531ignqb5rkm8g6lm6tase5csk</string>
+				<string>com.googleusercontent.apps.926314958540-iel0q2jtpeh93mjd1ieqa3hsptmi48qb</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>GIDClientID</key>
+	<string>926314958540-iel0q2jtpeh93mjd1ieqa3hsptmi48qb.apps.googleusercontent.com</string>
+	<key>GIDRedirectURI</key>
+	<string>com.googleusercontent.apps.926314958540-iel0q2jtpeh93mjd1ieqa3hsptmi48qb:/oauth2redirect/google</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Kikit uses your camera for identity verification so only verified members can join live rooms and discover others.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Kikit uses your location to show nearby live rooms and verified members in your area, and to personalize community rooms and regional recommendations.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Kikit uses your location while the app is open to show nearby live rooms and verified members in your area.</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Kikit uses your microphone for live room audio and video calls with verified members.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Kikit saves profile photos and shared images to your photo library when you choose to download them.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Kikit uses your photo library so you can add profile photos and share images in chat.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>arm64</string>
+	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+</dict>
+</plist>

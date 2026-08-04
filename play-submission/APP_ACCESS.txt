@@ -1,0 +1,33 @@
+KIKIT — APP ACCESS (demo account for Google reviewers)
+Play Console → Policy → App content → App access
+============================================================
+
+SELECT
+------
+All or some functionality is restricted
+
+CREDENTIALS
+-----------
+Username / Email: appreview@letskikit.com
+Password: AppReview2026!
+
+INSTRUCTIONS FOR REVIEWERS (paste into Play Console)
+----------------------------------------------------
+Demo login (no OTP):
+1. Tap "Continue with Email" on sign-in
+2. Email: appreview@letskikit.com
+3. Password: AppReview2026!
+4. Do NOT use Sign in with Apple/Google for demo
+
+Test path:
+- LIVE tab → join a live room
+- DISCOVER tab → browse verified members → send a Spark
+- PROFILE → subscriptions, account deletion
+
+BACKEND REQUIREMENTS (you must verify before submission)
+--------------------------------------------------------
+Render env:
+  OTP_BYPASS_EMAILS=appreview@letskikit.com
+
+Seed demo user on Render shell:
+  python -m app.scripts.dev.seed_app_review_user
