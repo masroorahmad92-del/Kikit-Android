@@ -27,6 +27,13 @@ from app.services.notification import notify_user
 from app.utils.photos import get_best_photo
 
 
+def _gift_display_label(gift: Gift) -> str:
+    icon = (gift.icon or "").strip()
+    if icon and any(ord(char) > 127 for char in icon):
+        return icon
+    return gift.name
+
+
 def send_gift(
     db: Session,
     sender_id: UUID,
@@ -109,6 +116,7 @@ def send_gift(
 
         sender_name = getattr(sender.profile, "name", "Someone")
         receiver_name = getattr(receiver.profile, "name", "Someone")
+        gift_label = _gift_display_label(gift)
         logger.debug(f"Retrieved names: sender={sender_name}, receiver={receiver_name}")
 
         create_gift_announcement(
@@ -116,7 +124,7 @@ def send_gift(
             sender_id=sender_id,
             receiver_id=receiver_id,
             gift=gift,
-            message=f"{sender_name} sent a {gift.name} to {receiver_name}!",
+            message=f"{sender_name} sent {gift_label} to {receiver_name}!",
         )
         logger.debug("Created gift announcement")
 
@@ -127,7 +135,7 @@ def send_gift(
             db=db,
             user_id=receiver_id,
             title="🎁 New Gift!",
-            body=f"{sender_name} sent you a {gift.name}!",
+            body=f"{sender_name} sent you {gift_label}!",
             type=NotificationType.GIFT_RECEIVED.value,
             data={
                 "sender_id": str(sender_id),

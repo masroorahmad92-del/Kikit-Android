@@ -59,7 +59,7 @@ export const Header = ({
           </Text>
         )}
         {subTitle && (
-          <Text ff={'semiBold'} fs={'S'} color="grey800">
+          <Text ff={'semiBold'} fs={'S'} color="grey800" style={styles.subTitle}>
             {subTitle}
           </Text>
         )}
@@ -143,13 +143,18 @@ export const Header = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    height: 45,
-    alignItems: 'center',
+    minHeight: moderateScale(45),
+    alignItems: 'flex-start',
     flexDirection: 'row',
     marginTop: Platform.OS === 'android' ? moderateScale(15) : moderateScale(6),
-    marginBottom: moderateScale(5),
+    marginBottom: moderateScale(8),
     paddingHorizontal: moderateScale(16),
     gap: moderateScale(8),
+  },
+  subTitle: {
+    marginTop: moderateScale(2),
+    lineHeight: moderateScale(18),
+    flexShrink: 1,
   },
   logo: {
     height: 30,
@@ -165,6 +170,7 @@ const styles = StyleSheet.create({
   },
   rightBtnContainer: {
     right: 0,
+    alignSelf: 'center',
   },
   rightIconsRow: {
     flexDirection: 'row',

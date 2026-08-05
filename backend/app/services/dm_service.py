@@ -6,6 +6,7 @@ from app.models.user import User
 from app.repositories.profile import get_profile_by_user_id
 from app.repositories.user import get_user_by_id
 from app.repositories.user_block import is_user_blocked_between
+from app.utils.photos import get_best_photo
 
 
 def create_one_to_one_channel_service(
@@ -53,6 +54,23 @@ def create_one_to_one_channel_service(
     )
 
     members = [str(current_user.id), str(other_user.id)]
+    photo_a = get_best_photo(my_profile)
+    photo_b = get_best_photo(other_profile)
+
+    stream_client.upsert_users(
+        [
+            {
+                "id": str(current_user.id),
+                "name": my_profile.name,
+                "image": photo_a or None,
+            },
+            {
+                "id": str(other_user.id),
+                "name": other_profile.name,
+                "image": photo_b or None,
+            },
+        ]
+    )
 
     channel = stream_client.channel(
         channel_type="messaging",
@@ -63,6 +81,11 @@ def create_one_to_one_channel_service(
                 str(current_user.id): str(my_profile.id),
                 str(other_user.id): str(other_profile.id),
             },
+            "profile_photos": {
+                str(current_user.id): photo_a,
+                str(other_user.id): photo_b,
+            },
+            "image": photo_b,
         },
     )
 

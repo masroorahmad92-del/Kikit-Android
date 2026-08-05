@@ -12,47 +12,55 @@ import {revenueCatLogout} from '../../utils/revenueCatHelper';
 import {getPrimaryPhoto} from '../../utils/helpers';
 
 const client = StreamChat.getInstance(STREAM_API_KEY);
-// const chatTheme = {
-//   channelPrimary: {
-//     container: {backgroundColor: colors.primary},
-//   },
-// };
+
 export default function ChatProvider({children}) {
   const {user, userProfile} = useKitkitStore();
   const [isReady, setIsReady] = useState(false);
   const [chatClient, setChatClient] = useState(client);
+
   useEffect(() => {
-    //if user is authenticated we will connect user else do early return
-    //     setChatClient(client);
-    //
-    // console.log('loggedINuser in chat provider', user);
+    const userId = user?.user?.id;
+    const streamToken = user?.stream_chat_token;
+    if (!userId || !streamToken) {
+      setIsReady(false);
+      return undefined;
+    }
+
+    let cancelled = false;
+
     const connect = async () => {
       try {
-        // Disconnect any existing user before connecting a new one
-        if (client.userID) {
+        if (client.userID && client.userID !== String(userId)) {
           await client.disconnectUser();
         }
 
+        const displayName = userProfile?.name?.trim() || 'Kikit Member';
+        const displayImage = getPrimaryPhoto(userProfile?.photos)?.url || null;
+
         await client.connectUser(
           {
-            id: user?.user?.id, //logged in user
-            name: userProfile?.name,
-            image: getPrimaryPhoto(userProfile?.photos)?.url || null,
+            id: String(userId),
+            name: displayName,
+            image: displayImage,
           },
-          user?.stream_chat_token,
+          streamToken,
         );
-        setIsReady(true);
+
+        if (!cancelled) {
+          setChatClient(client);
+          setIsReady(true);
+        }
       } catch (error) {
         console.log('connect user error->', error);
 
-        // Build a meaningful message based on the error
         const errorMsg = error?.message || '';
         let toastTitle = 'Connection Failed';
         let toastMessage = 'Something went wrong. Please sign in again.';
 
         if (errorMsg.includes('deleted')) {
           toastTitle = 'Account Deleted';
-          toastMessage = 'Your account has been deleted. Please contact support or create a new account.';
+          toastMessage =
+            'Your account has been deleted. Please contact support or create a new account.';
         } else if (error?.StatusCode === 401 || errorMsg.includes('token')) {
           toastTitle = 'Session Expired';
           toastMessage = 'Your session has expired. Please sign in again.';
@@ -61,14 +69,12 @@ export default function ChatProvider({children}) {
           toastMessage = 'Unable to connect. Please check your internet and try again.';
         }
 
-        // Show toast first, then delay logout so the toast is visible
         Toast.show({
           type: 'error',
           text1: toastMessage,
           visibilityTime: 4000,
         });
 
-        // Delay logout so the toast renders before navigation unmounts
         setTimeout(async () => {
           await revenueCatLogout();
           try {
@@ -85,14 +91,14 @@ export default function ChatProvider({children}) {
     connect();
 
     return () => {
-      // Always disconnect on cleanup
+      cancelled = true;
       client.disconnectUser().catch(err => {
         console.log('disconnect error->', err);
       });
       setIsReady(false);
     };
-  }, []);
-  console.log('isReady', isReady);
+  }, [user?.user?.id, user?.stream_chat_token, userProfile?.name, userProfile?.photos]);
+
   if (!isReady) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -101,7 +107,6 @@ export default function ChatProvider({children}) {
     );
   }
   return (
-    //     theme={chatTheme}
     <OverlayProvider>
       <Chat client={chatClient}>{children}</Chat>
     </OverlayProvider>

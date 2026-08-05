@@ -8,7 +8,7 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {ChannelList, useChatContext} from 'stream-chat-react-native';
 import {colors, moderateScale} from '../../theme';
 import {CheckDouble, GiftIcon} from '../../assets/icons';
@@ -26,43 +26,83 @@ const Chats = ({navigation}) => {
     members: {$in: [client.user.id]},
   };
 
-  // Custom channel preview component - FIXED
+  const getOtherMember = (channel, chatClient) =>
+    Object.values(channel.state.members || {}).find(
+      member => member.user?.id && member.user.id !== chatClient.user?.id,
+    );
+
+  const getLastMessagePreview = lastMessage => {
+    if (!lastMessage) {
+      return 'Start the conversation';
+    }
+    if (lastMessage.text) {
+      return lastMessage.text;
+    }
+    if (lastMessage.attachments?.length > 0) {
+      const att = lastMessage.attachments[0];
+      if (att.type === 'audio' || att.mime_type?.startsWith('audio')) {
+        return '🎵 Audio message';
+      }
+      if (att.type === 'image') {
+        return '📷 Photo';
+      }
+      if (att.type === 'video') {
+        return '📹 Video';
+      }
+      return '📎 Attachment';
+    }
+    return 'Start the conversation';
+  };
+
+  // Custom channel preview component
   // eslint-disable-next-line react/no-unstable-nested-components
   const CustomChannelPreview = props => {
     const {channel} = props;
     const {client: chatClient} = useChatContext();
-
-    // Get the other user in the channel
-    const otherMember = Object.values(channel.state.members || {}).find(
-      member => member.user?.id !== chatClient.user?.id,
+    const otherMember = getOtherMember(channel, chatClient);
+    const otherUserId = otherMember?.user?.id;
+    const [displayName, setDisplayName] = useState(
+      otherMember?.user?.name || 'Member',
     );
 
-    const displayName = otherMember?.user?.name || 'Unknown User';
+    useEffect(() => {
+      let cancelled = false;
+
+      const resolveDisplayName = async () => {
+        const memberName = otherMember?.user?.name?.trim();
+        if (memberName) {
+          if (!cancelled) {
+            setDisplayName(memberName);
+          }
+          return;
+        }
+
+        if (!otherUserId) {
+          return;
+        }
+
+        try {
+          const response = await chatClient.queryUsers({id: {$eq: otherUserId}});
+          const queriedName = response?.users?.[0]?.name?.trim();
+          if (!cancelled && queriedName) {
+            setDisplayName(queriedName);
+          }
+        } catch (error) {
+          console.log('Failed to resolve chat display name:', error);
+        }
+      };
+
+      resolveDisplayName();
+      return () => {
+        cancelled = true;
+      };
+    }, [channel.cid, otherMember?.user?.name, otherUserId, chatClient]);
+
     const displayImage = otherMember?.user?.image;
     const isOnline = otherMember?.user?.online;
 
-    // Get last message
-    const messages = channel.state.messages || [];
-    const lastMessage = messages[messages.length - 1];
-
-    // Determine last message preview text (support audio/attachments)
-    let lastMessageText = 'Nothing yet...';
-    if (lastMessage) {
-      if (lastMessage.text) {
-        lastMessageText = lastMessage.text;
-      } else if (lastMessage.attachments?.length > 0) {
-        const att = lastMessage.attachments[0];
-        if (att.type === 'audio' || att.mime_type?.startsWith('audio')) {
-          lastMessageText = '🎵 Audio message';
-        } else if (att.type === 'image') {
-          lastMessageText = '📷 Photo';
-        } else if (att.type === 'video') {
-          lastMessageText = '📹 Video';
-        } else {
-          lastMessageText = '📎 Attachment';
-        }
-      }
-    }
+    const lastMessage = channel.lastMessage?.() || null;
+    const lastMessageText = getLastMessagePreview(lastMessage);
 
     const lastMessageTime = lastMessage?.created_at;
     const isMyMessage = lastMessage?.user?.id === chatClient.user?.id;

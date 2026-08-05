@@ -35,11 +35,35 @@ const FALLBACK_CATEGORIES = [
   {id: 'gaming', name: 'Gaming'},
 ];
 
+const CATEGORY_COLORS = {
+  music: '#7C3AED',
+  travel: '#0891B2',
+  fitness: '#059669',
+  business: '#111827',
+  food: '#EA580C',
+  gaming: '#9333EA',
+  sports: '#2563EB',
+  default: '#374151',
+};
+
+const getCategoryColor = room => {
+  const key = (room?.category_name || '').toLowerCase();
+  return CATEGORY_COLORS[key] || CATEGORY_COLORS.default;
+};
+
 const getRoomImage = room => {
-  if (room?.host_photo) {
-    return {uri: room.host_photo};
-  }
+  // Use a neutral placeholder — profile photos often contain caption text baked in.
   return require('../../assets/images/image-placegolder.png');
+};
+
+const formatViewerCount = count => {
+  const value = Number(count) || 0;
+  return `${value} viewer${value === 1 ? '' : 's'}`;
+};
+
+const formatGiftCount = count => {
+  const value = Number(count) || 0;
+  return `${value} gift${value === 1 ? '' : 's'}`;
 };
 
 const isUuid = value =>
@@ -55,17 +79,20 @@ const statusLabel = room => {
 
 const RoomCard = ({room, featured, onJoin, onMenu}) => {
   const isLive = room.status === 'live';
+  const categoryColor = getCategoryColor(room);
   return (
     <TouchableOpacity
       activeOpacity={0.92}
       style={[styles.roomCard, featured && styles.featuredCard]}
       onPress={() => onJoin(room)}>
       <View style={styles.roomMedia}>
-        <FastImage
-          source={getRoomImage(room)}
-          style={styles.roomImage}
-          resizeMode={FastImage.resizeMode.cover}
-        />
+        <View style={[styles.roomImageFallback, {backgroundColor: categoryColor}]}>
+          <FastImage
+            source={getRoomImage(room)}
+            style={styles.roomImage}
+            resizeMode={FastImage.resizeMode.cover}
+          />
+        </View>
         <View style={[styles.statusBadge, isLive ? styles.liveBadge : styles.soonBadge]}>
           <Text ff="c-Bold" fs="XXS" color="white">
             {statusLabel(room)}
@@ -101,10 +128,10 @@ const RoomCard = ({room, featured, onJoin, onMenu}) => {
         )}
         <View style={styles.roomStatsRow}>
           <Text ff="c-Regular" fs="XS" color="grey500">
-            {room.viewer_count || 0} viewers
+            {formatViewerCount(room.viewer_count)}
           </Text>
           <Text ff="c-Regular" fs="XS" color="grey500">
-            {room.gift_count || 0} gifts
+            {formatGiftCount(room.gift_count)}
           </Text>
           <TouchableOpacity
             style={[styles.joinButton, !isLive && styles.scheduleButton]}
@@ -137,7 +164,11 @@ const LiveRoomsScreen = ({navigation}) => {
   const isVerified = userProfile?.is_profile_verified === true;
   const liveRooms = useMemo(() => rooms.filter(room => room.status === 'live'), [rooms]);
   const upcomingRooms = useMemo(() => rooms.filter(room => room.status !== 'live'), [rooms]);
-  const featuredRoom = liveRooms[0] || upcomingRooms[0];
+  const featuredLiveRoom = liveRooms[0] || null;
+  const listRooms = useMemo(() => {
+    const additionalLive = featuredLiveRoom ? liveRooms.slice(1) : liveRooms;
+    return [...additionalLive, ...upcomingRooms];
+  }, [featuredLiveRoom, liveRooms, upcomingRooms]);
 
   const requireVerified = useCallback(() => {
     if (!isVerified) {
@@ -353,8 +384,6 @@ const LiveRoomsScreen = ({navigation}) => {
         </View>
       </View>
 
-      {renderCategoryRail()}
-
       {isLoading ? (
         <View style={styles.loadingState}>
           <ActivityIndicator color={colors.secondary} size="large" />
@@ -364,18 +393,22 @@ const LiveRoomsScreen = ({navigation}) => {
         </View>
       ) : (
         <FlatList
-          data={rooms}
+          data={listRooms}
           keyExtractor={item => item.id.toString()}
+          style={styles.roomList}
           refreshControl={
             <RefreshControl refreshing={isRefreshing} onRefresh={() => fetchRooms(true)} />
           }
           ListHeaderComponent={
             <>
-              {featuredRoom && (
+              {renderCategoryRail()}
+              {featuredLiveRoom && (
                 <View style={styles.sectionBlock}>
-                  <Text ff="c-Bold" fs="XL" color="grey800">Live Now</Text>
+                  <Text ff="c-Bold" fs="XL" color="grey800" style={styles.sectionHeading}>
+                    Live Now
+                  </Text>
                   <RoomCard
-                    room={featuredRoom}
+                    room={featuredLiveRoom}
                     featured
                     onJoin={handleJoin}
                     onMenu={() => Toast.show({type: 'info', text1: 'Report or block anytime inside a room'})}
@@ -553,8 +586,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   categoryRail: {
-    paddingHorizontal: moderateScale(20),
-    paddingVertical: moderateScale(14),
+    paddingTop: moderateScale(4),
+    paddingBottom: moderateScale(12),
     gap: moderateScale(10),
   },
   categoryChip: {
@@ -566,9 +599,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   categoryChipActive: {backgroundColor: '#111827'},
-  listContent: {paddingHorizontal: moderateScale(20), paddingBottom: moderateScale(28)},
-  sectionBlock: {marginBottom: moderateScale(18)},
-  sectionTitle: {marginBottom: moderateScale(10)},
+  roomList: {flex: 1},
+  listContent: {paddingHorizontal: moderateScale(20), paddingBottom: moderateScale(28), paddingTop: moderateScale(4)},
+  sectionBlock: {marginBottom: moderateScale(18), zIndex: 1},
+  sectionHeading: {marginBottom: moderateScale(10)},
+  sectionTitle: {marginBottom: moderateScale(10), marginTop: moderateScale(4)},
   roomCard: {
     backgroundColor: colors.white,
     borderRadius: moderateScale(8),
@@ -580,9 +615,22 @@ const styles = StyleSheet.create({
     shadowRadius: 14,
     elevation: 3,
   },
-  featuredCard: {marginTop: moderateScale(10)},
-  roomMedia: {height: moderateScale(150), backgroundColor: colors.grey100},
-  roomImage: {width: '100%', height: '100%'},
+  featuredCard: {marginTop: moderateScale(4)},
+  roomMedia: {
+    height: moderateScale(150),
+    backgroundColor: colors.grey100,
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  roomImageFallback: {
+    ...StyleSheet.absoluteFillObject,
+    opacity: 0.92,
+  },
+  roomImage: {
+    width: '100%',
+    height: '100%',
+    opacity: 0.35,
+  },
   statusBadge: {
     position: 'absolute',
     left: moderateScale(12),
@@ -592,6 +640,7 @@ const styles = StyleSheet.create({
     borderRadius: moderateScale(12),
     alignItems: 'center',
     justifyContent: 'center',
+    zIndex: 2,
   },
   liveBadge: {backgroundColor: colors.danger},
   soonBadge: {backgroundColor: '#111827'},
@@ -605,6 +654,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(17,24,39,0.65)',
     alignItems: 'center',
     justifyContent: 'center',
+    zIndex: 2,
   },
   roomBody: {padding: moderateScale(14)},
   roomTitleRow: {flexDirection: 'row', gap: moderateScale(10), alignItems: 'flex-start'},

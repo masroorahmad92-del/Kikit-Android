@@ -332,6 +332,11 @@ const SubscriptionScreen = ({navigation}) => {
                 Retry
               </Text>
             </TouchableOpacity>
+            {Platform.OS === 'android' && error.includes('Android subscriptions') && (
+              <Text ff="i-regular" fs="XXS" color="grey400" style={styles.configHint}>
+                Purchases on Android require the Play Store billing setup and RevenueCat Android key.
+              </Text>
+            )}
           </View>
         )}
 
@@ -733,6 +738,12 @@ const styles = StyleSheet.create({
     borderRadius: moderateScale(8),
     borderWidth: 1,
     borderColor: colors.primary,
+  },
+  configHint: {
+    marginTop: moderateScale(10),
+    textAlign: 'center',
+    lineHeight: moderateScale(16),
+    paddingHorizontal: moderateScale(12),
   },
   plansSection: {
     paddingHorizontal: moderateScale(20),

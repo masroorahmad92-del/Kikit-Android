@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { moderateScale } from '../theme';
+import {formatAnnouncementMessage} from '../utils/giftDisplay';
 
 const {width: screenWidth} = Dimensions.get('window');
 
@@ -21,7 +22,8 @@ const DEFAULT_NEWS = [
 
 const RotatingBanner = ({newsItems}) => {
   const scrollX = useRef(new Animated.Value(0)).current;
-  const items = newsItems && newsItems.length > 0 ? newsItems : DEFAULT_NEWS;
+  const rawItems = newsItems && newsItems.length > 0 ? newsItems : DEFAULT_NEWS;
+  const items = rawItems.map(item => formatAnnouncementMessage(item));
 
   useEffect(() => {
     // Reset and restart animation when items change
